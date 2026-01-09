@@ -333,8 +333,8 @@ scoriX_agent/
 - [x] RAG system implementation
 - [x] Web scraping modules
 - [x] Evaluator agent
-- [x ] Answer sheet evaluation
-- [ x] Student identification
+- [x] Answer sheet evaluation
+- [x] Student identification
 
 ### Phase 2: Advanced Features 🔄
 
