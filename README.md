@@ -306,6 +306,8 @@ scoriX_agent/
 - **Selenium** - Dynamic content scraping
 - **PyPDF2** - PDF processing
 - **Tesseract OCR** - Text recognition
+- **Express and node** - For user Data management.
+-  **MONGODB** - For user Data Storage and authentication process.
 
 ### Frontend
 
@@ -331,8 +333,8 @@ scoriX_agent/
 - [x] RAG system implementation
 - [x] Web scraping modules
 - [x] Evaluator agent
-- [ ] Answer sheet evaluation
-- [ ] Student identification
+- [x ] Answer sheet evaluation
+- [ x] Student identification
 
 ### Phase 2: Advanced Features 🔄
 
@@ -347,7 +349,7 @@ scoriX_agent/
 - [ ] User authentication and authorization
 - [ ] Multi-tenant support
 - [ ] Cloud deployment
-- [ ] Mobile application
+- [ ] web application
 - [ ] Integration with LMS platforms
 
 ---
