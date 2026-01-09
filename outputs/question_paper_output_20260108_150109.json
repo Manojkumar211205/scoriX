@@ -1,0 +1,41 @@
+[
+  [
+    {
+      "co": "Understand the basic concepts of programming, including variables, data types, and control structures.",
+      "po": [
+        "Apply knowledge of mathematics and computing fundamentals."
+      ],
+      "topics": [
+        "basic concepts of programming",
+        "variables",
+        "data types",
+        "control structures"
+      ]
+    }
+  ],
+  [
+    {
+      "CO": "Understand the basic concepts of programming, including variables, data types, and control structures.",
+      "PO": [
+        "Apply knowledge of mathematics and computing fundamentals."
+      ],
+      "topics": [
+        "basic concepts of programming",
+        "variables",
+        "data types",
+        "control structures"
+      ],
+      "questions": [
+        "Compare and contrast the use of different data types in programming, and explain when it is appropriate to use each one.",
+        "What are the advantages and disadvantages of using integers versus floating-point numbers in programming?",
+        "When should you use a string data type instead of a boolean in programming?",
+        "In what scenarios is it appropriate to use an array data type compared to a linked list in programming?",
+        "How does the choice between character and binary data types impact programming performance?",
+        "Design a program that uses variables, data types, and control structures, and requires user input and output in a meaningful way, such as validating the input data.",
+        "Create a program that utilizes loops and functions, in addition to variables and control structures, to manipulate user-inputted data and display the results.",
+        "Develop a program that implements real-world programming concepts, including user interaction, data validation, and problem-solving, using loops, functions, variables, and control structures.",
+        "Considering the example of calculating the average of user-inputted numbers, design a program that uses variables, data types, control structures, loops, and input/output operations to solve this problem."
+      ]
+    }
+  ]
+]

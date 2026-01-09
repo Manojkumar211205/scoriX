@@ -1,0 +1,108 @@
+[
+  [
+    {
+      "co": "Understand the basic concepts of programming, including variables, data types, and control structures.",
+      "po": [
+        "PO1: Engineering knowledge – Apply knowledge of mathematics and computing fundamentals."
+      ],
+      "topics": [
+        "Unit 1: Introduction to programming, variables, data types, input/output operations."
+      ]
+    },
+    {
+      "co": "Apply programming constructs such as loops, functions, and conditionals to solve computational problems.",
+      "po": [
+        "PO2: Problem analysis – Identify, formulate, and analyze computational problems.",
+        "PO3: Design/development of solutions – Design and implement efficient algorithms."
+      ],
+      "topics": [
+        "Unit 2: Control structures – conditional statements, loops, and functions."
+      ]
+    },
+    {
+      "co": "Analyze and implement fundamental data structures to solve real-world problems efficiently.",
+      "po": [
+        "PO3: Design/development of solutions – Design and implement efficient algorithms."
+      ],
+      "topics": [
+        "Unit 3: Arrays, strings, and basic operations.",
+        "Unit 4: Data structures – stacks, queues, linked lists.",
+        "Unit 5: Searching and sorting algorithms, time and space complexity."
+      ]
+    }
+  ],
+  [
+    {
+      "CO": "Understand the basic concepts of programming, including variables, data types, and control structures.",
+      "PO": [
+        "PO1: Engineering knowledge – Apply knowledge of mathematics and computing fundamentals."
+      ],
+      "topics": [
+        "Unit 1: Introduction to programming, variables, data types, input/output operations."
+      ],
+      "questions": [
+        "[\n  {\n    \"concept\": {\n      \"CO1\": {\n        \"description\": \"Understand the basic concepts of programming\",\n        \"scenario\": {\n          \"identify\": {\n            \"variables\": {\n              \"use\": {\n                \"explanation\": \"Explain the use of variables in a programming scenario\"\n              }\n            },\n            \"dataTypes\": {\n              \"use\": {\n                \"explanation\": \"Explain the use of data types in a programming scenario\"\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n]\n\nNote: The \"...\" in the input suggests that the JSON may have been truncated. I have added a placeholder object to replace the missing content.",
+        "[\n  {\n    \"PO1\": \"Engineering knowledge – Apply knowledge of mathematics and computing fundamentals. Write a program that takes user input, stores it in a variable, and outputs the result of a simple mathematical operation.\"\n  },\n  {\n    \"no content found\": \"create question on your own but don't add irrelavent questions\"\n  },\n  {\n    \"program\": {\n      \"description\": \"Understand the basic concepts of programming, including variables, data types, and control structures.\",\n      \"example\": \"Write a program that takes user input, stores it in a variable, and outputs the result of a simple mathematical operation such as addition, subtraction, multiplication, or division.\",\n      \"specific data type\": null,\n      \"design\": \"Design a program that takes user input in the form of two numbers and a mathematical operation, then outputs the result of that operation using control structures.\",\n      \"creation\": \"Create a program that prompts the user for two numbers, performs a mathematical operation on those numbers, and outputs the result, using a variable to store the result of the operation.\"\n    }\n  }\n]",
+        "{\n  \"0\": [\"PO1: Engineering knowledge – Apply knowledge of mathematics and computing fundamentals.\"],\n  \"1\": \"Unit 1: Introduction to programming, variables, data types, input/output operations. Given a code snippet, identify and correct errors related to variable declaration and data type usage.\",\n  \"2\": [\"In the context of programming, how do variables, data types, and control structures relate to each other? Provide an example to illustrate your understanding.\"],\n  \"3\": [\"Imagine you are given a code snippet containing variable declarations and input/output operations. What steps would you take to correct errors in data type usage?\"]\n}\n[\n  \"Understand the basic concepts of programming, including variables, data types, and control structures.+ ['PO1: Engineering knowledge – Apply knowledge of mathematics and computing fundamentals.'] + Unit 1: Introduction to programming, variables, data types, input/output operations. Given a code snippet, identify and correct errors related to variable declaration and data type usage.\",\n  \"Given a code snippet with variable declarations, how would you check for errors in data type usage?\",\n  \"Consider the following code snippet with variable declarations and data types. Identify any errors related to control structures in the given code.\"\n]",
+        "[\n\"Understand the basic concepts of programming. Describe the differences between primitive and non-primitive data types in programming and provide examples of each.\"\n]\n\nThe input is a list with one string element. Since the string is not truncated, there is no need to replace it with a placeholder. The reconstructed JSON is a list with the same string element.",
+        "[\n  {\n    \"question\": {\n      \"stem\": \"PO1: Engineering knowledge – Apply knowledge of mathematics and computing fundamentals. Analyze a given program and determine the output control structure (sequence, selection, or iteration) used and why it is appropriate for the task.\"\n    },\n    \"correct_answer\": {\n      \"text\": \"The control structure of the given program is a(n) _______, which is appropriate for the task because _______.\"\n    },\n    \"incorrect_answers\": [\n      {\n        \"text\": \"The control structure of the given program is a(n) sequence, which is appropriate for the task because it is the simplest form of control structure.\"\n      },\n      {\n        \"text\": \"The control structure of the given program is a(n) selection, which is appropriate for the task because it allows for conditional execution of code.\"\n      },\n      {\n        \"text\": \"The control structure of the given program is a(n) iteration, which is appropriate for the task because it allows for repeated execution of code.\"\n      }\n    ]\n  },\n  {\n    \"question\": {\n      \"stem\": \"Understand the basic concepts of programming, including variables, data types, and control structures.\"\n    },\n    \"correct_answer\": {\n      \"text\": \"True\"\n    },\n    \"incorrect_answers\": [\n      {\n        \"text\": \"False\"\n      }\n    ]\n  }\n]"
+      ]
+    },
+    {
+      "CO": "Apply programming constructs such as loops, functions, and conditionals to solve computational problems.",
+      "PO": [
+        "PO2: Problem analysis – Identify, formulate, and analyze computational problems.",
+        "PO3: Design/development of solutions – Design and implement efficient algorithms."
+      ],
+      "topics": [
+        "Unit 2: Control structures – conditional statements, loops, and functions."
+      ],
+      "questions": [
+        "Analyze a given code snippet that uses loops and conditionals, and identify any logical errors or inefficiencies, providing suggestions for improvement.",
+        "Analyze a given computational problem and determine the most efficient loop structure (for, while, do-while) to use. Explain your decision.",
+        "Describe a scenario where using a while loop would be more advantageous than a for loop in solving a computational problem. Provide a code example to support your explanation.",
+        "Given a specific computational problem, analyze the problem and determine the most efficient loop structure to use among for, while, and do-while. Explain your decision.",
+        "Analyze a given code snippet that uses loops and conditionals, and identify any logical errors or inefficiencies, providing suggestions for improvement. (MCQ) Which of the following code snippets has a logical error in the use of a for loop?",
+        "Describe a real-world scenario that can be solved using loops and conditionals, and explain how these programming constructs can be applied to solve the problem.",
+        "Can you explain how a computer programmer might use a loop and conditional statements to automate the process of sorting a list of numbers in ascending order?",
+        "Consider a scenario where a program needs to repeat a set of instructions until a certain condition is met. How would a programmer implement this using loops and conditionals? Provide an example.",
+        "Imagine you are a software developer and you need to create a program that checks if a user-entered number is even or odd. How would you use loops and conditionals to accomplish this task?",
+        "Compare the efficiency of two different algorithms for finding the largest number in a list, and discuss the advantages and disadvantages of each approach.",
+        "Which approach is more efficient for finding the largest number in a list, using loops and conditionals or recursion? Explain the advantages and disadvantages of each approach.",
+        "Design a function that takes a list of strings as input and returns a new list with all duplicate strings removed, using only loops and conditionals.",
+        "Given a list of strings, how would you implement a function to remove duplicates using only loops and conditionals?",
+        "Consider a list of strings that contains duplicates. How can you design a function using loops and conditionals to return a new list with all duplicate strings removed?",
+        "Imagine you have a list of strings with duplicates. Can you create a function using only loops and conditionals to produce a new list without any duplicate strings?"
+      ]
+    },
+    {
+      "CO": "Analyze and implement fundamental data structures to solve real-world problems efficiently.",
+      "PO": [
+        "PO3: Design/development of solutions – Design and implement efficient algorithms."
+      ],
+      "topics": [
+        "Unit 3: Arrays, strings, and basic operations.",
+        "Unit 4: Data structures – stacks, queues, linked lists.",
+        "Unit 5: Searching and sorting algorithms, time and space complexity."
+      ],
+      "questions": [
+        "Design a solution to a problem using a stack or queue data structure, and explain the time and space complexity of your implementation",
+        "Compare and contrast the efficiency of different sorting algorithms for a given dataset, explaining the trade-offs between time and space complexity",
+        "Describe how you would approach the problem and which data structures you would consider using in a scenario where you need to implement a data structure for a mobile application that handles a large volume of data, and explain your reasoning",
+        "Explain the concept of arrays",
+        "How would you evaluate the time complexity of an algorithm you designed to solve a complex problem?",
+        "Explain how you would analyze the problem and design an efficient algorithm for a real-world problem that requires data structures to optimize its solution",
+        "What are some examples of real-world problems that can be solved using fundamental data structures, and how would you implement them?",
+        "Describe the steps you would take to analyze the space complexity of an algorithm after designing it to solve a complex problem",
+        "Calculate the time complexity of an algorithm designed to solve a complex problem using fundamental data structures",
+        "What is a stack?",
+        "Define control structures",
+        "How do you declare an array?",
+        "Which of the following is a linear data structure? (A) Tree (B) Graph (C) Stack (D) Heap",
+        "What is the time complexity of binary search? (A) O(n) (B) O(log n) (C) O(n^2) (D) O(1)",
+        "Which sorting algorithm has the best average case? (A) Bubble Sort (B) Quick Sort (C) Selection Sort (D) Insertion Sort",
+        "What is polymorphism? (A) Multiple forms (B) Single form (C) No form (D) Abstract form"
+      ]
+    }
+  ]
+]

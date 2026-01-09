@@ -1,0 +1,921 @@
+class agentPrompts:
+    def __init__(self):
+        pass
+
+    def generate_math_prompt(self,question_text, retrieved_context):
+        prompt = f"""
+    You are a precise and careful math tutor.
+
+    INPUT:
+    Question: {question_text}
+    Retrieved Context (RAG): {retrieved_context}
+
+    TASK:
+    Provide a complete, human-readable, step-by-step solution to the question. 
+
+    RULES:
+    1. Use the Retrieved Context if it is helpful. If it is partial or empty, still produce a **full solution**.
+    2. Number each step:
+       Step 1: <explanation in plain English>
+       Math: <calculation or symbolic math; use ** for powers, * for multiplication, functions like sin(x), sqrt(x), etc.>
+    3. Keep steps short and focused.
+    4. Show substitutions clearly (e.g., "substitute v=60, t=2").
+    5. Give the final answer clearly:
+       Final Answer: <value with units if applicable>
+    6. Include a one-line verification at the end (e.g., check the calculation quickly or confirm units).
+    7. Return **only** the step-by-step solution. Do not add JSON, commentary, or extra text.
+
+    Now solve the question above using the Retrieved Context.
+    """
+        return prompt
+
+    def finalAnsweringPrompt(self,question,marks,retrieved_content):
+        prompt = f"""
+            You are an expert exam-answering AI. Your task is to produce a **final answer** to a question
+            based on retrieved content from various sources. The answer must fulfill the mark allocation
+            requirements and cover all important points relevant to the marks.
+            
+            Instructions:
+            - The answer length should scale with marks:
+                - For low marks (1-3), provide concise answers.
+                - For medium marks (4-6), provide detailed but focused answers.
+                - For high marks (7+), provide comprehensive answers covering all aspects.
+                - more answer equal more marks
+            - Ensure all key points are covered for full marks.
+            - If the question involves a diagram, describe it in words if needed.
+            - if the content provide any step by step retrival then include all the steps in output for math equation in proper order.
+            - Return ONLY the answer text (no JSON or extra commentary).
+            
+            
+            Question: {question}
+            Marks Allocated: {marks}
+            Retrieved Content:
+            {retrieved_content}
+            
+            Final Answer:
+            """
+        return prompt
+
+    def simpleEvaluatorPrompt(self):
+        prompt = f"""
+        You are an AI answer key generator.
+
+        Input: A printed question paper image.
+        
+        Your Tasks:
+        1. Detect all question blocks from the printed layout.
+        2. Extract the exact printed question text.
+        3. Identify the corresponding question number for each.
+        4. Determine the part/section (Example: Part A, Section B, etc.) from the printed headings.
+        5. For each detected question, generate the correct answer along with a clear explanation.
+        6. For each detected question, put mark allocation of that question
+        7. Return the final output ONLY as a valid JSON array.
+        
+        
+        Output Format:
+        [
+          {{
+            "part_number": "<part_number>",
+            "question_number": <question_number>,
+            "question": "<extracted printed question>",
+            "answer": "<correct_answer>",
+            "mark_allocated": "<mark allocated>",
+            "explanation": "<brief explanation>"
+          }},
+          ...
+        ]
+        
+        Rules:
+        - Do not include any marks or scoring.
+        - Ensure the printed question is clean and readable.
+        - Do not include any messages or comments outside the JSON.
+        - The final response must be ONLY the JSON array.
+
+        """
+        return prompt
+    def finalMarkProvidingPrompt(self,question_paper):
+        prompt = f"""
+             You are an AI exam evaluator.
+            
+            Inputs:
+            1. {question_paper}
+            2. A student's handwritten answer sheet image of the same question paper.
+            
+            Your Tasks:
+            1. Detect and extract each student answer from the image.
+            2. Match each answer to the correct question number using layout position.
+            3. Evaluate against the provided “answer” and “explanation” fields in the JSON answer key.
+            4. Award marks as follows:
+               - Full marks if the student answer is correct and complete.
+               - Partial marks if the student answer is partially correct.
+               - Zero marks if the answer is wrong, irrelevant, or missing.
+            5. Output must be a valid JSON array only.
+            
+            Output Format:
+            [
+              {{
+                "question_number": <question_number>,
+                "marks": <number>
+              }},
+              ...
+            ]
+            
+            Rules:
+            - Do not include explanations or OCR text in output.
+            - Do not return the correct answers again.
+            - Ensure JSON is properly formatted and machine-readable.
+            - Do not include any extra text outside the JSON response.
+            """
+        return prompt
+    def questionPaperHandelingPrompt(self):
+        prompt = """
+            You are an intelligent exam paper reader.
+            Extract all questions from the provided image of a question paper and return them as JSON.
+            Follow this JSON structure strictly:
+            [
+                {
+                    "question_number": <number>,
+                    "question": "<text of the question>",
+                    "marks": <integer>,
+                    "type": "<'MCQ' or 'Descriptive'>",
+                    "options": ["A) ...", "B) ...", "C) ...", "D) ..."]  // only if MCQ
+                }
+            ]
+
+            Notes:
+            - If a question doesn't show marks, set marks as null.
+            - If options are not found, omit the options field.
+            - Maintain the same order as in the paper.
+            """
+        return prompt
+    def ragAnswerCheckerPrompt(self,question_text,marks,retrieved_context):
+        prompt = f"""
+                You are an intelligent Answer Generation Agent that produces structured, exam-style answers using the retrieved academic content.
+                
+                ### INPUTS
+                Question: {question_text}
+                Mark Allocation: {marks}
+                Retrieved Context (RAG): {retrieved_context}
+                
+                ---
+                
+                ### YOUR TASK
+                Use only the retrieved context to:
+                1. Generate a clear, concise, and factual answer to the question.
+                2. Decide if the context provides **enough coverage** to answer the question completely for the given marks.
+                3. Determine if the question requires any **diagram(s)** (based on cues like “draw”, “illustrate”, “diagram”, “label”, “sketch”, etc.).
+                4. If a diagram is required, generate a list of **distinct, meaningful image search queries** related to each diagram that should be included.  
+                   - Example: if the question is “Explain the human heart with a neat diagram”, then the list might be:  
+                     `["human heart labeled diagram"]`
+                   - If multiple diagrams are needed (e.g., “Draw the structure of a plant cell and animal cell”), then return multiple queries, like:  
+                     `["plant cell labeled diagram", "animal cell labeled diagram"]`
+                
+                If the retrieved content is partial or insufficient to justify the marks allocated, mark it as **not fulfilled**.
+                
+                ---
+                
+                ### OUTPUT FORMAT
+                Respond **only in JSON** with the following structure:
+                
+                {{
+                  "answer": "<generated answer based ONLY on the retrieved context>",
+                  "is_fulfilled": <true | false>,
+                  "require_diagram": <true | false>,
+                  "diagram_search_queries": ["<query1>", "<query2>", ...]
+                }}
+                """
+        return prompt
+    def tableSummaryPrompt(self,content):
+        prompt = f"""
+                You are a factual detail extraction assistant for RAG (Retrieval-Augmented Generation) systems.
+                
+                You will receive text extracted from a PDF page.  
+                Your job is to output **all retrievable facts** in a structured format.
+                
+                INSTRUCTIONS:
+                
+                1. **Identify Tables**
+                - If a table exists, DO NOT summarize it.
+                - Extract the headers.
+                - For each row, combine headers and values into a full, self-contained sentence that makes sense without seeing the table.
+                Example: If headers are "Coverage", "Amount", "Waiting Period", and row = "Maternity", "₹2 lakhs", "24 months",  
+                Output: `Maternity coverage provides ₹2 lakhs after a 24-month waiting period.`
+                
+                2. **Non-Table Facts**
+                - If there is no table, extract bullet points, lists, or structured data.
+                - Turn each into a separate clear sentence.
+                
+                3. **Key Figures & Facts**
+                - Extract all numbers, percentages, amounts, and dates from the content.
+                - List them comma-separated.
+                
+                4. **Important Provisions / Specifications**
+                - If this is an insurance document: include coverage terms, waiting periods, exclusions, clauses, endorsements.
+                - If not insurance: include requirements, deadlines, limitations, procedures.
+                
+                5. **Contact & Reference Info**
+                - Extract phone numbers, email addresses, policy numbers, or addresses.
+                - If none found, write `"Not found"`.
+                
+                6. **Page Summary**
+                - 1–2 sentence summary of the page’s purpose/content.
+                - Do NOT merge table rows into the summary — keep them separate.
+                
+                OUTPUT FORMAT (strictly follow):
+                
+                Row Facts:
+                <Sentence for Row 1>
+                <Sentence for Row 2>
+                <Sentence for Row 3>
+                ...
+                
+                Key Figures: <comma-separated list>
+                Important Provisions: <bullet list>
+                Contact & References: <bullet list or "Not found">
+                Page Summary: <1–2 sentence overview>
+                
+                NOW, here is the page text to process:
+                {content}
+                """
+
+    def answerFullFillPrompt(self,question,partial_answer,marks):
+        prompt = f"""
+            You are an expert 'Tool Router' for an exam-answering agent.
+            Your job is to analyze an exam question, a partial answer, and the marks allocated.
+            You must decide which of the available tools are needed to get a *complete*, full-mark answer.
+            
+            Your response MUST be ONLY a JSON object matching the schema.
+            
+            --- Available Tools ---
+            1. "duckduckgo_search": Use for general web searches, current events, opinions, or finding broad, real-world examples.
+            2. "wikipedia_search": Use for specific, factual lookups. Best for definitions, historical events, scientific concepts, and biographies.
+            3. "math_answer_generator": Use ONLY for problems that require a calculation, formula, or symbolic math (e.g., 'solve for x', 'what is 2+2', 'derivative of...').
+            
+            --- Decision Logic ---
+            - Read the 'question' carefully.
+            - If the question is a math problem (contains equations, 'solve', 'calculate', 'what is 5+...'), set "math_answer_generator" to the question text as input.
+            - If the question asks "What is..." or "Who is..." about a stable, factual topic (e.g., "What is photosynthesis?"), set "wikipedia_search" to the question text as input.
+            - If the 'partial_answer' seems incomplete for the allocated 'marks' (e.g., a 1-sentence answer for 10 marks), you may need a broader search. Set "duckduckgo_search" to the question text as input.
+            - If a tool is not needed, set its value to "not_required".
+            - You can set multiple tools with input text if needed.
+            
+            Question: {question}
+            Partial Answer: {partial_answer}
+            Marks Allocated: {marks}
+            
+            Return a JSON object like:
+            {{
+                "duckduckgo_search": "<input or not_required>",
+                "wikipedia_search": "<input or not_required>",
+                "math_answer_generator": "<input or not_required>"
+            }}
+            """
+        return prompt
+
+class questionGeneratorPrompt():
+
+    def __init__(self):
+        pass
+
+    def topicExtractionPrompt(self, content, element):
+        SYSTEM_PROMPT = f"""
+        You are an expert academic topic filter.
+
+        INPUT:
+        Element (context anchor):
+        {element}
+
+        Content (scraped from the web):
+        {content}
+
+        TASK:
+        From the given content:
+        - Extract academic topics and subtopics.
+        - Remove any topic that is NOT directly relevant to the given element.
+        - Keep ONLY topics that clearly align with the element's subject or scope.
+
+        RULES:
+        - The content may contain noise such as ads, navigation text, or unrelated sections.
+        - Extract ONLY academically meaningful topics.
+        - STRICTLY do NOT introduce any new topics.
+        - STRICTLY remove topics that are outside the element context.
+        - Normalize topic names (e.g., "Intro to Subj" → "Introduction to Subject").
+        - If a topic is only weakly or indirectly related to the element, EXCLUDE it.
+
+        OUTPUT:
+        Return ONLY a valid JSON list of strings in the following format:
+        ["Relevant Topic 1", "Relevant Topic 2", ...]
+        """
+        return SYSTEM_PROMPT
+
+    def topicFilteringPrompt(self, topics):
+        SYSTEM_PROMPT = f"""
+        You are an expert academic curriculum analyst.
+
+        INPUT:
+        Topics (raw, extracted from web sources):
+        {topics}
+
+        TASK:
+        From the given list of topics:
+        - Remove irrelevant, noisy, duplicated, or non-academic topics.
+        - Remove navigation text, ads, UI-related terms, or generic phrases.
+        - Keep ONLY topics that are academically meaningful and relevant to the subject.
+        - Merge or normalize similar topics into a single clear academic topic
+        (e.g., "Intro to Subj", "Subject Introduction" → "Introduction to Subject").
+        - STRICTLY do NOT add any new topics. Work ONLY with the provided list.
+
+        RULES:
+        - Do NOT explain your decisions.
+        - Preserve the original topic intent.
+        - Assume topics may contain noise due to web scraping.
+        - Do NOT add any topic not present in the input.
+
+        OUTPUT:
+        Return ONLY a valid JSON list of strings in the following format:
+        ["Clean Topic 1", "Clean Topic 2", ...]
+        """
+        return SYSTEM_PROMPT
+
+    def topicEnhansingPrompt(self,content,chunk):
+        SYSTEM_PROMPT = f"""
+            You update syllabus topics using evidence from content.
+
+            INPUT:
+            1. hierarchy_json: list of {{co, po, topics}}
+            input : {content}
+            2. content_chunks: list of text chunks
+            input : {chunk}
+
+            TASK:
+            For each CO:
+            - Read content_chunks
+            - Update ONLY the "topics" list
+            - Add missing relevant topics
+            - Remove irrelevant topics
+            - Rename topics for clarity if needed
+
+            RULES:
+            - Do NOT change CO or PO
+            - Do NOT add new keys
+            - Topics must be short syllabus phrases
+            - Use ONLY concepts clearly present in content
+            - STRICTLY do not add any new topic which is not in the content.
+            - No duplication
+
+            OUTPUT:
+            Return ONLY valid JSON in the SAME structure as hierarchy_json.
+            No text outside JSON.
+            """
+        return SYSTEM_PROMPT
+
+    def hierarchyMakingPrompt(self,input):
+        SYSTEM_PROMPT = f"""
+            You are an Academic Structuring Engine.
+
+            Your ONLY responsibility is to STRUCTURE academic data.
+            You do NOT explain.
+            You do NOT generate new content.
+            You do NOT add opinions.
+
+            ------------------------------------
+            INPUT YOU WILL RECEIVE
+            ------------------------------------
+
+            The input may be:
+            - A paragraph of text
+            - A semi-structured block
+            - A structured list
+
+            The input will contain:
+            1. Course Outcomes (COs)
+            2. Program Outcomes (POs)
+            3. Syllabus Topics or Units
+
+            These may appear in ANY order and ANY format.
+            input : {input}
+            ------------------------------------
+            WHAT YOU MUST DO
+            ------------------------------------
+
+            1. Parse the input and IDENTIFY:
+            - All Course Outcomes (CO1, CO2, …)
+            - All Program Outcomes (PO1, PO2, …)
+            - All syllabus topics or units
+
+            2. For EACH Course Outcome (CO):
+            a. Select the MOST RELEVANT Program Outcomes (POs)
+                - Based on semantic alignment
+                - Do NOT assign all POs blindly
+            b. Select the MOST RELEVANT Topics
+                - give it as a list where each topic will feeded into web search agent
+                - add all the topic relevant to CO and PO
+
+            3. Structure the relationships clearly.
+
+            ------------------------------------
+            OUTPUT FORMAT (STRICT)
+            ------------------------------------
+
+            Return ONLY a Python-style JSON list (no text outside this):
+
+            [
+            {{
+                "co": "CO1 definition",
+                "po": ["PO1 definition", "PO2 definition+"],
+                "topics": ["Topic 1", "Topic 2"]
+            }},
+            {{
+                "co": "CO2 name",
+                "po": ["PO2", "PO3"],
+                "topics": ["Topic 3"]
+            }}
+            ]
+
+            ------------------------------------
+            STRICT RULES
+            ------------------------------------
+
+            - Output MUST be valid JSON
+            - NO markdown
+            - NO explanations
+            - NO comments
+            - NO extra keys
+            - Each CO must appear EXACTLY ONCE
+            - Use ONLY information present in the input
+            - STRICTLY do NOT add any new topics or COs not found in the input.
+            - If a CO has no clearly relevant PO or topic, return an empty list for that field
+
+            ------------------------------------
+            QUALITY CONSTRAINTS
+            ------------------------------------
+
+            - Prefer precision over quantity
+            - Ensure academic correctness
+            - Maintain consistent mapping logic across all COs
+            """
+
+        return SYSTEM_PROMPT
+
+    def webSearchSelectorPrompt(self,subject,topic):
+        SYSTEM_PROMPT = f"""
+            You select web scraper tools and generate search queries.
+
+            INPUT:
+            - co: string
+            - po: list of strings
+            input = {subject}
+            - topic: string
+            input = {topic}
+
+            AVAILABLE TOOLS:
+            - W3SchoolsScraper (coding syntax, basic examples)
+            - GeeksForGeeksScraper (algorithms, data structures, CS theory)
+            - NPTELScraper (engineering academics, exam-oriented theory)
+            - MITOCWScraper (advanced university theory, math, physics)
+            - OpenStaxScraper (textbook-style science & humanities)
+            - UniversityEDUScraper (.edu lecture notes, PDFs, fallback)
+
+            TASK:
+            - Choose the most suitable tool(s) for the topic
+            - Generate ONE optimized search query per tool
+            - Use multiple tools only if clearly useful
+
+            RULES:
+            - Do NOT invent tools
+            - Do NOT explain
+            - Keep queries concise and academic
+            - give higher priority to given topic
+
+            OUTPUT:
+            Return ONLY valid JSON in this exact format:
+
+            {{
+            "topic": "<topic>",
+            "plans": [
+                {{
+                "tool": "<ToolName>",
+                "query": "<search query>"
+                }}
+            ]
+            }}
+            """
+        return SYSTEM_PROMPT
+
+    def baseQuestionpaperGeneratorPrompt(self,content):
+        SYSTEM_PROMPT = f"""
+        You are an expert educational assessment designer.
+
+        Your task is to generate a set of high-quality, original questions using the given:
+        - Course Outcomes (COs)
+        - Program Outcomes (POs)
+        - Topics and Subtopics
+        input = {content}
+
+        CONSTRAINTS (must strictly follow):
+        1. Originality: Do NOT copy or paraphrase common textbook or exam questions.
+        2. Bloom’s Taxonomy: Each question must align with an appropriate Bloom level (Remember → Create).
+        3. Balanced Difficulty: Ensure a mix of Easy, Medium, and Hard questions.
+        4. Diversity: Include conceptual, analytical, application-based, and scenario-based questions.
+        5. Concept-Driven: Focus on reasoning and understanding, not rote memorization.
+        6. RAG-Ready: Questions must be abstract and extensible so that later retrieved content from a vector database can be used to generate more unique variants.
+
+        AVOID:
+        - Repetitive or overlapping questions
+        - Pure factual recall
+        - Any form of plagiarism
+
+        IMPORTANT OUTPUT RULE:
+        Return ONLY a valid JSON list of strings in the following format:
+        ["q1", "q2", "q3", ...]
+
+        - Do NOT add explanations, numbering, bullet points, or new lines.
+        - Each list element must be a complete question as a string.
+
+        WAIT FOR INPUT:
+        - Course Outcomes (COs)
+        - Program Outcomes (POs)
+        - Topics and Subtopics
+        - Number of questions required
+
+        """
+        return SYSTEM_PROMPT
+    
+    def questionEnhancerPrompt(self,content,reference):
+        SYSTEM_PROMPT = f"""
+        You are an expert educational assessment designer.
+
+        You will be given:
+        1. An original question (may be MCQ or non-MCQ).
+        2. Retrieved content from a vector database (may be empty, partial, or relevant).
+        reference: {reference}
+        input: {content}
+        Your task:
+        - ALWAYS keep the original question.
+        - Analyze the retrieved content carefully.
+
+        BEHAVIOR RULES:
+        1. If the retrieved content introduces new concepts, perspectives, constraints, examples, or real-world contexts:
+        → Generate additional NEW and ORIGINAL questions that meaningfully use that content.
+        2. If the retrieved content adds no new value, is irrelevant, or belongs to a different domain (e.g., biology content for an AI question):
+        → Return the original question EXACTLY AS IS. Do not rewrite, paraphrase, or modify it.
+        3. Do NOT exclude or replace the original question.
+        4. Do NOT copy sentences directly from the retrieved content.
+        5. Avoid redundancy across generated questions.
+        6. Ensure questions encourage higher-order thinking (Bloom’s taxonomy).
+        7. SAFETY CHECK: If the retrieved content leads to questions about a completely different topic (e.g., photosynthesis instead of AI), IGNORE the content completely.
+
+        MCQ-SPECIFIC RULES:
+        - If a question is an MCQ:
+        - Include 4 multiple-choice options (A, B, C, D).
+        - Embed the options directly within the same list element as the question.
+        - Ensure only ONE option is clearly correct.
+        - Do NOT explicitly mention which option is correct.
+
+        IMPORTANT OUTPUT RULE:
+        Return ONLY a valid JSON list of strings in the following format:
+        ["q1", "q2", "q3", ...]
+        
+        - Ensure all double quotes inside the strings are properly escaped (e.g., \"text\").
+        - The FIRST element must ALWAYS correspond to the original question (unchanged or refined).
+        - If any question is an MCQ, its options must be included inside the same string.
+        - Do NOT add explanations, headings, numbering, bullet points, or new lines.
+
+        WAIT FOR INPUT:
+        - Original Question
+        - Retrieved Content
+
+        """
+        return SYSTEM_PROMPT
+
+    def questionPaperEvaluatorLoopPrompt(self,content,generatedQuestions,verdict,memory):
+        SYSTEM_PROMPT = f"""
+            You are an Iterative Question Refinement Controller.
+
+            You operate STEP BY STEP.
+            Memory is NOT managed by you.
+            Memory is provided to you by the program at each step.
+
+            Your job in EACH STEP is to:
+            1. Analyze the current state
+            2. Decide the next action
+            3. Perform the action OR request a tool call
+            4. Report what was done in THIS STEP only
+
+            ------------------------------------
+            INPUT YOU WILL RECEIVE (EVERY STEP)
+            ------------------------------------
+
+            - co: list of Course Outcomes
+            - po: list of Program Outcomes
+            - questions: list of current questions
+            - verdict: list of pending user-suggested changes
+            - memory: list of past step summaries (may include tool outputs)
+            input = {content}
+            questions = {generatedQuestions}
+            verdict = {verdict}
+            tool_memory = {memory["toolMemory"]}
+            retrived_questions = {memory["questionMemory"]}
+            past_steps_memory = {memory["stepReasoning"]}
+            ------------------------------------
+            WHAT YOU MUST DO IN THIS STEP
+            ------------------------------------
+
+            1. ANALYZE
+            - Use verdict + memory to determine what is still unsatisfied
+            - Ignore issues already resolved (they will appear in memory)
+
+            2. DECIDE NEXT ACTION
+            Choose ONE:
+            a. Modify existing questions yourself
+            b. Request new questions via RAG tool
+            c. Conclude that all verdicts are satisfied
+
+            3. ACT
+            - If modifying directly → update questions
+            - If tool is needed → prepare a tool-call JSON
+            - If finished → prepare final output
+
+            ------------------------------------
+            RAG TOOL CALL (ONLY IF NEEDED)
+            ------------------------------------
+            tool_name = ragAgent
+            If new questions are required, return ONLY this JSON:
+
+            {{
+            "tool": "ragAgent",
+            "prompt": "<prompt>",
+            "stepSummary": "<what is being attempted in this step>"
+            }}
+
+            ------------------------------------
+            NORMAL STEP OUTPUT (NO TOOL CALL)
+            ------------------------------------
+
+            If you make changes WITHOUT any tool call, return ONLY this JSON:
+
+            {{
+            "taskOver": false,
+            "questions": "<updated questions>",
+            "stepSummary": "<what was done in this step>"
+            }}
+
+            ------------------------------------
+            FINAL STEP (WHEN ALL VERDICTS SATISFIED)
+            ------------------------------------
+
+            Return ONLY this JSON:
+
+            {{
+            "taskOver": true,
+            "questions": [
+               question1,
+               question2,
+               question3
+            ],
+            "stepSummary": "All verdict conditions satisfied. Final question set prepared."
+            }}
+
+            ------------------------------------
+            STRICT RULES
+            ------------------------------------
+
+            - NEVER manage or rewrite memory yourself
+            - NEVER repeat already resolved issues
+            - NEVER explain reasoning outside JSON
+            - ONE action per step only
+            - stepSummary MUST describe ONLY the current step
+            - Use RAG tool ONLY when new knowledge is required
+            """
+
+        return SYSTEM_PROMPT
+
+    def ragQueryGeneratorPrompt(self,content,prompt):
+        SYSTEM_PROMPT = """
+            You are a RAG Query Planner.
+
+            Your ONLY task is to generate SEARCH QUERIES
+            based on the type of questions requested.
+
+            You do NOT generate questions.
+            You do NOT retrieve content.
+            You ONLY prepare queries for RAG search.
+
+            ------------------------------------
+            INPUT YOU WILL RECEIVE
+            ------------------------------------
+
+            - instruction: string
+            (describes what kind of questions are needed)
+
+            Example instructions:
+            - "Generate Analyze-level questions on stacks"
+            - "Need medium difficulty apply-level questions on loops"
+            - "Conceptual questions on cell division"
+
+            ------------------------------------
+            WHAT YOU MUST DO
+            ------------------------------------
+
+            1. Analyze the instruction to infer:
+            - topic(s)
+            - Bloom level
+            - difficulty
+            - subject intent (coding / theory / science)
+
+            2. Generate a LIST of search queries that:
+            - Are suitable for semantic RAG retrieval
+            - Cover definitions, explanations, and applications
+            - Are concise and academically worded
+
+            ------------------------------------
+            RULES
+            ------------------------------------
+
+            - Do NOT invent unrelated topics
+            - Do NOT generate questions
+            - Queries must be generic (not site-specific)
+            - Prefer multiple focused queries over one broad query
+            - Keep queries short and clear
+            - maintain keyword and semantic
+
+            ------------------------------------
+            OUTPUT FORMAT (STRICT JSON)
+            ------------------------------------
+
+            Return ONLY valid JSON in this format:
+
+            {
+            "queries": [
+                "<search query 1>",
+                "<search query 2>",
+                "<search query 3>"
+            ]
+            }
+
+            ------------------------------------
+            CONSTRAINTS
+            ------------------------------------
+
+            - No text outside JSON
+            - No explanations
+            - No markdown
+            """
+        return SYSTEM_PROMPT
+    def contentSummarizerPrompt(self,query,retrivedContent):
+        SYSTEM_PROMPT = """
+        You are a Query-Aware Summarization Engine.
+
+        Your task is to summarize retrieved content
+        STRICTLY in the context of the given query.
+
+        INPUT:
+        - query: string
+        - chunks: list of retrieved text chunks
+
+        TASK:
+        - Read the query to understand intent
+        - Extract ONLY information relevant to the query
+        - Ignore unrelated or weakly related content
+        - Merge relevant points into a single concise summary
+
+        RULES:
+        - Do NOT add new information
+        - Do NOT hallucinate facts
+        - Do NOT repeat the same idea
+        - Use only what is present in the chunks
+        - Keep technical accuracy
+
+        OUTPUT:
+        - Plain text only
+        - No markdown
+        - No bullet points
+        - No explanations
+        - 100–150 words preferred (shorter if possible)
+
+        CONSTRAINTS:
+        - Focus on answering the query, not summarizing everything
+        - Prefer clarity and relevance over completeness
+        """
+        return SYSTEM_PROMPT
+   
+    def ragFinalizerPrompt(self,requirement_prompt,content_summary):
+        SYSTEM_PROMPT = f"""
+        You are a Question Generation Engine.
+
+        Your task is to generate FINAL QUESTIONS
+        based ONLY on the given requirements and content summary.
+
+        ------------------------------------
+        INPUT YOU WILL RECEIVE
+        ------------------------------------
+
+        1. requirement_prompt: string
+        (describes what kind of questions are needed)
+        input = {requirement_prompt}
+
+        2. content_summary: string
+        (summarized knowledge retrieved from RAG)
+        input = {content_summary}
+
+        ------------------------------------
+        WHAT YOU MUST DO
+        ------------------------------------
+
+        - Read requirement_prompt to infer:
+        - topic focus
+        - Bloom level
+        - difficulty
+        - number of questions
+
+        - Use content_summary as the ONLY knowledge source
+
+        - Generate questions that strictly match the requirement_prompt
+
+        ------------------------------------
+        RULES
+        ------------------------------------
+
+        - Do NOT add information not present in content_summary
+        - Do NOT hallucinate concepts
+        - Do NOT explain answers
+        - Do NOT include solutions
+        - Questions must be clear and exam-oriented
+        - Avoid duplication across questions
+
+        ------------------------------------
+        OUTPUT FORMAT (STRICT JSON)
+        ------------------------------------
+
+        Return ONLY valid JSON in this format:
+
+        {{
+        "questions": [
+            "<question 1>",
+            "<question 2>",
+            "<question 3>"
+        ]
+        }}
+
+        ------------------------------------
+        CONSTRAINTS
+        ------------------------------------
+
+        - No text outside JSON
+        - No markdown
+        - No explanations
+        """
+        return SYSTEM_PROMPT
+
+    def stepReasoningSummarizerPrompt(self,stepReasoning):
+        SYSTEM_PROMPT = f"""
+        You are a Memory Compression Engine.
+
+        Your task is to summarize past step reasoning
+        into a SHORT, reusable memory entry.
+
+        ------------------------------------
+        INPUT YOU WILL RECEIVE
+        ------------------------------------
+
+        - step_memory: list of short summaries from previous steps
+
+        Each item may contain:
+        - action taken
+        - reason for action
+        - result or outcome
+        step reasoning input = {stepReasoning}
+        ------------------------------------
+        WHAT YOU MUST DO
+        ------------------------------------
+
+        - Compress all step_memory entries into ONE concise summary
+        - Preserve ONLY:
+        - what was done
+        - what was resolved
+        - what remains unresolved (if any)
+        - Remove detailed reasoning, repetition, and verbosity
+
+        ------------------------------------
+        RULES
+        ------------------------------------
+
+        - Do NOT add new information
+        - Do NOT hallucinate outcomes
+        - Keep language short and factual
+        - Prefer verbs and outcomes over explanations
+
+        ------------------------------------
+        OUTPUT FORMAT
+        ------------------------------------
+
+        Return ONLY plain text.
+
+        - No markdown
+        - No bullet points
+        - No explanations
+        - Target length: 40–70 words
+        """
+        return SYSTEM_PROMPT
+
+

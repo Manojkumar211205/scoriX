@@ -608,30 +608,30 @@ class ClipSearchService:
 
 
 # --- Example Usage ---
-
-if __name__ == "__main__":
-    # 1. Initialize service with powerful OpenCLIP
-    service = ClipSearchService("testDB")
-
-    # 2. Store the image
-    service.index_images(["img_1.png"])
-    logger.info("Image stored in vector database")
-
-    # 3. Search with text query
-    test_query = "butterfly life cycle"
-    results = service.search_by_text(test_query, limit=3)
-
-    # 4. Display results
-    print(f"\n🔍 Search: '{test_query}'")
-    print("=" * 50)
-    for i, result in enumerate(results):
-        print(f"#{i + 1}: Score={result.score:.3f}, File={result.payload.get('filename')}")
-
-    # 5. Test direct similarity (optional)
-    print(f"\n🎯 Testing direct similarity:")
-    similarity = service.get_direct_similarity("img.png", test_query)
-    print(f"Direct similarity score: {similarity:.3f}")
-
-    # 6. Show stats
-    stats = service.get_index_stats()
-    print(f"\n📊 Database stats: {stats}")
+#
+# if __name__ == "__main__":
+#     # 1. Initialize service with powerful OpenCLIP
+#     service = ClipSearchService("testDB")
+#
+#     # 2. Store the image
+#     service.index_images(["img_1.png"])
+#     logger.info("Image stored in vector database")
+#
+#     # 3. Search with text query
+#     test_query = "butterfly life cycle"
+#     results = service.search_by_text(test_query, limit=3)
+#
+#     # 4. Display results
+#     print(f"\n🔍 Search: '{test_query}'")
+#     print("=" * 50)
+#     for i, result in enumerate(results):
+#         print(f"#{i + 1}: Score={result.score:.3f}, File={result.payload.get('filename')}")
+#
+#     # 5. Test direct similarity (optional)
+#     print(f"\n🎯 Testing direct similarity:")
+#     similarity = service.get_direct_similarity("img.png", test_query)
+#     print(f"Direct similarity score: {similarity:.3f}")
+#
+#     # 6. Show stats
+#     stats = service.get_index_stats()
+#     print(f"\n📊 Database stats: {stats}")

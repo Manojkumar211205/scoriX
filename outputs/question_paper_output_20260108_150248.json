@@ -1,0 +1,39 @@
+[
+  [
+    {
+      "co": "Understand the basic concepts of programming, including variables, data types, and control structures.",
+      "po": [
+        "Apply knowledge of mathematics and computing fundamentals."
+      ],
+      "topics": [
+        "basic concepts of programming",
+        "variables",
+        "data types",
+        "control structures"
+      ]
+    }
+  ],
+  [
+    {
+      "CO": "Understand the basic concepts of programming, including variables, data types, and control structures.",
+      "PO": [
+        "Apply knowledge of mathematics and computing fundamentals."
+      ],
+      "topics": [
+        "basic concepts of programming",
+        "variables",
+        "data types",
+        "control structures"
+      ],
+      "questions": [
+        "Explain the basic concepts of programming, including variables, data types, and control structures, in a way that a non-technical friend can understand? Additionally, provide a real-world example for each concept.",
+        "As a programmer, how would you apply knowledge of mathematics and computing fundamentals when utilizing variables, data types, and control structures in a programming context?",
+        "Considering control structures in programming, can you differentiate between sequential, selection, and iterative execution, providing an example for each?",
+        "How do variables and data types contribute to the organization and clarity of code, and can you give an example of when each is most appropriately used?",
+        "Imagine you are designing a simple program that requires user input and decision-making. How would you implement variables, data types, and control structures to accomplish this task?",
+        "Apply knowledge of mathematics and computing fundamentals",
+        "Explain how the application of mathematics and computing fundamentals is essential to programming, and provide examples of how you have used these fundamentals in your own programming projects"
+      ]
+    }
+  ]
+]

@@ -1,0 +1,286 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Question Paper - Programming Fundamentals</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            color: #1a1a1a;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 2rem;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 3rem;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+        
+        .header {
+            text-align: center;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+        
+        .header .subtitle {
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 1rem;
+        }
+        
+        .meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: #888;
+            margin-top: 1rem;
+        }
+        
+        .course-name {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            border-left: 4px solid #667eea;
+            border-radius: 8px;
+        }
+        
+        .co-section {
+            margin-bottom: 3rem;
+            page-break-inside: avoid;
+        }
+        
+        .co-header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+        }
+        
+        .co-header h2 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .co-description {
+            font-size: 1rem;
+            opacity: 0.95;
+        }
+        
+        .po-section, .topics-section {
+            background: #f8f9fa;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+        }
+        
+        .po-section h3, .topics-section h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 0.75rem;
+        }
+        
+        .po-section ul, .topics-section ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .po-section li, .topics-section li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+        
+        .po-section li:before, .topics-section li:before {
+            content: "▸";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+        }
+        
+        .questions-section {
+            margin-top: 1.5rem;
+        }
+        
+        .questions-header {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e0e0e0;
+        }
+        
+        .question {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-left: 4px solid #667eea;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .question:hover {
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+            transform: translateX(4px);
+        }
+        
+        .question-number {
+            font-weight: 700;
+            color: #667eea;
+            margin-right: 0.5rem;
+            font-size: 1.1rem;
+        }
+        
+        .question-text {
+            color: #333;
+            font-size: 1rem;
+            line-height: 1.8;
+        }
+        
+        .footer {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 2px solid #e0e0e0;
+            text-align: center;
+            color: #888;
+            font-size: 0.9rem;
+        }
+        
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            
+            .container {
+                box-shadow: none;
+                padding: 1.5rem;
+            }
+            
+            .question:hover {
+                transform: none;
+                box-shadow: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Question Paper</h1>
+            <div class="subtitle">Generated by ScoriX AI System</div>
+            <div class="meta">
+                <span>Generated on: January 08, 2026</span>
+                <span>Time: 03:18 PM</span>
+            </div>
+        </div>
+        
+        <div class="course-name">
+            📚 Course: Programming Fundamentals
+        </div>
+
+        <div class="co-section">
+            <div class="co-header">
+                <h2>Course Outcome 1</h2>
+                <div class="co-description">CO1: Understand the basic concepts of programming, including variables, data types, and control structures.</div>
+            </div>
+
+            <div class="po-section">
+                <h3>Program Outcomes (PO)</h3>
+                <ul>
+                    <li>Apply knowledge of mathematics and computing fundamentals.</li>
+                </ul>
+            </div>
+
+            <div class="topics-section">
+                <h3>Topics Covered</h3>
+                <ul>
+                    <li>basic concepts of programming</li>
+                    <li>variables</li>
+                    <li>data types</li>
+                    <li>control structures</li>
+                </ul>
+            </div>
+
+            <div class="questions-section">
+                <div class="questions-header">Questions (Total: 7)</div>
+
+                <div class="question">
+                    <span class="question-number">Q1.1.</span>
+                    <span class="question-text">Explain the basic concepts of programming, including variables, data types, and control structures, in a way that a non-technical friend can understand? Additionally, provide a real-world example for each concept.</span>
+                </div>
+
+                <div class="question">
+                    <span class="question-number">Q1.2.</span>
+                    <span class="question-text">As a programmer, how would you apply knowledge of mathematics and computing fundamentals when utilizing variables, data types, and control structures in a programming context?</span>
+                </div>
+
+                <div class="question">
+                    <span class="question-number">Q1.3.</span>
+                    <span class="question-text">Considering control structures in programming, can you differentiate between sequential, selection, and iterative execution, providing an example for each?</span>
+                </div>
+
+                <div class="question">
+                    <span class="question-number">Q1.4.</span>
+                    <span class="question-text">How do variables and data types contribute to the organization and clarity of code, and can you give an example of when each is most appropriately used?</span>
+                </div>
+
+                <div class="question">
+                    <span class="question-number">Q1.5.</span>
+                    <span class="question-text">Imagine you are designing a simple program that requires user input and decision-making. How would you implement variables, data types, and control structures to accomplish this task?</span>
+                </div>
+
+                <div class="question">
+                    <span class="question-number">Q1.6.</span>
+                    <span class="question-text">Apply knowledge of mathematics and computing fundamentals</span>
+                </div>
+
+                <div class="question">
+                    <span class="question-number">Q1.7.</span>
+                    <span class="question-text">Explain how the application of mathematics and computing fundamentals is essential to programming, and provide examples of how you have used these fundamentals in your own programming projects</span>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="footer">
+            <p>End of Question Paper</p>
+            <p>Generated by ScoriX Question Paper Generator</p>
+        </div>
+    </div>
+</body>
+</html>

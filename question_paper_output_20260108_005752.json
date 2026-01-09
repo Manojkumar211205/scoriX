@@ -1,0 +1,51 @@
+[
+  [
+    {
+      "co": "Understand the basic concepts of programming, including variables, data types, and control structures.",
+      "po": [
+        "Apply knowledge of mathematics and computing fundamentals."
+      ],
+      "topics": [
+        "Programming Fundamentals",
+        "Variables",
+        "Data Types",
+        "Control Structures"
+      ]
+    }
+  ],
+  [
+    {
+      "CO": "Understand the basic concepts of programming, including variables, data types, and control structures.",
+      "PO": [
+        "Apply knowledge of mathematics and computing fundamentals."
+      ],
+      "topics": [
+        "Programming Fundamentals",
+        "Variables",
+        "Data Types",
+        "Control Structures"
+      ],
+      "questions": [
+        "Understand the basic concepts of programming, including variables, data types, and control structures.",
+        "What types of data can variables store, and what are the unique names given to them called?",
+        "What determines what kind of data a variable can hold?",
+        "What are control structures and what do they allow programs to do?",
+        "Differentiate between variables and data types in programming, providing examples and counter-examples to clarify the distinction.",
+        "Describe the concept of control structures in a way that promotes understanding and engagement.",
+        "Identify potential issues related to variables, data types, or control structures that may be causing a problem in a program.",
+        "Evaluate the strengths and weaknesses of different data types in a programming language, and provide recommendations for when to use each type.",
+        "Design a simple program that uses variables, data types, and control structures to simulate a real-world scenario.",
+        "Compare and contrast the use of variables and control structures in programming, and provide examples of when each is most appropriate.",
+        "What is a stack?",
+        "Explain the concept of arrays.",
+        "Define control structures.",
+        "What is a linked list?",
+        "How do you declare an array?",
+        "Which of the following is a linear data structure? (A) Tree (B) Graph (C) Stack (D) Heap",
+        "What is the time complexity of binary search? (A) O(n) (B) O(log n) (C) O(n^2) (D) O(1)",
+        "Which sorting algorithm has the best average case? (A) Bubble Sort (B) Quick Sort (C) Selection Sort (D) Insertion Sort",
+        "What is polymorphism? (A) Multiple forms (B) Single form (C) No form (D) Abstract form"
+      ]
+    }
+  ]
+]

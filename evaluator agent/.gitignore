@@ -1,0 +1,35 @@
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv
+chroma_db/
+.env
+*.log
+.DS_Store
+
+# Data files (generated)
+data/evaluation_memory.json
+data/question_memory.json
+data/question_index.faiss
+
+# Output files (generated)
+output/*.json
+
+# Keep folder structure
+!data/.gitkeep
+!output/.gitkeep
+
+
+
+
+
+
+
+
+
+
