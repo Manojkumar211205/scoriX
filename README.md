@@ -374,8 +374,11 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 👥 Authors
 
-- **Your Name** - *Initial work*
-
+- **Ragul** - *Full Stack developer.*
+- **Manoj** - *AI developer.*
+- **Thanush** - *AI developer.*
+- **vidhesh** - *UI/UX,frontend developer.*
+  
 ---
 
 ## 🙏 Acknowledgments
@@ -383,12 +386,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - Google Gemini API for powerful language models
 - Qdrant for vector database technology
 - All open-source contributors
-
----
-
-## 📞 Contact
-
-For questions or support, please open an issue or contact [your-email@example.com](mailto:your-email@example.com)
 
 ---
 
